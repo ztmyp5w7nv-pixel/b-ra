@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>10. Sınıf Fizik Laboratuvarı | 24 Kasım Öğretmenler Günü</title>
+  <style>
+    :root {
+      --bg: #f8f9fc;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --ink: #0f172a;
+      --muted: #475569;
+      --primary: #2563eb;
+      --primary-soft: rgba(37, 99, 235, 0.1);
+      --accent: #0ea5e9;
+      --warm: #f59e0b;
+      --border: rgba(15, 23, 42, 0.08);
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 460px;
+      min-height: 100vh;
+      padding: 14px 16px 48px;
+    }
+
+    /* Üst Başlık & Öğretmenler Günü Notu */
+    .top-header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .pill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .badge-warm {
+      background: rgba(245, 158, 11, 0.14);
+      color: #b45309;
+    }
+
+    .top-header h1 {
+      margin: 0 0 6px;
+      font-size: 1.32rem;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+    }
+
+    .top-header p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* Alet Seçici Sekmeler */
+    .tool-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 16px;
+      padding: 11px 12px;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:active {
+      transform: scale(0.97);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.24);
+    }
+
+    .tab-btn strong {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .tab-btn span {
+      display: block;
+      font-size: 0.72rem;
+      opacity: 0.82;
+      margin-top: 2px;
+    }
+
+    /* Simülasyon Kartı */
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .lab-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lab-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .formula-pill {
+      font-family: "SF Mono", ui-monospace, Menlo, monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 250px;
+      touch-action: none;
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .btn-primary, .btn-ghost {
+      flex: 1;
+      appearance: none;
+      border-radius: 13px;
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease;
+    }
+
+    .btn-primary:active, .btn-ghost:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      border: 0;
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      color: var(--ink);
+    }
+
+    /* Sürgü Kontrolleri */
+    .controls-group {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 14px;
+    }
+
+    .control-item {
+      background: var(--surface-soft);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .control-top span:last-child {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Canlı Fizik Değerleri */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .metric-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .metric-box small {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .metric-box strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--ink);
+    }
+
+    /* Konu Anlatımı Kutusu */
+    .theory-box {
+      background: rgba(37, 99, 235, 0.05);
+      border: 1px solid rgba(37, 99, 235, 0.14);
+      border-radius: 16px;
+      padding: 13px;
+    }
+
+    .theory-box h3 {
+      margin: 0 0 5px;
+      font-size: 0.86rem;
+      color: var(--primary);
+    }
+
+    .theory-box p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--ink);
+      line-height: 1.48;
+    }
+
+    /* 24 Kasım Öğretmenler Günü Hediye Kartı */
+    .gift-card {
+      margin-top: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .gift-card h3 {
+      margin: 6px 0;
+      font-size: 0.98rem;
+    }
+
+    .gift-card p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="pill-row">
+        <span class="badge">10. Sınıf Fizik • Simülasyon</span>
+        <span class="badge badge-warm">24 Kasım Özel</span>
+      </div>
+      <h1>İnteraktif Fizik Aletleri Laboratuvarı</h1>
+      <p>
+        Fizik derslerini sevdiren kıymetli hocamıza 24 Kasım Öğretmenler Günü hediyesi ve 10. sınıf proje çalışması.
+      </p>
+    </header>
+
+    <nav class="tool-tabs" aria-label="Fizik aleti seçimi">
+      <button type="button" class="tab-btn active" data-tool="cikrik">
+        <strong>1. Çıkrık Sistemi</strong>
+        <span>Kuvvet Kazancı &amp; Tork</span>
+      </button>
+      <button type="button" class="tab-btn" data-tool="palanga">
+        <strong>2. Palanga Sistemi</strong>
+        <span>Makara &amp; İp Gerilmesi</span>
+      </button>
+      <button type="button" class="tab-btn" data-tool="egik">
+        <strong>3. Eğik Düzlem</strong>
+        <span>Bileşenler &amp; İvme</span>
+      </button>
+      <button type="button" class="tab-btn" data-tool="devre">
+        <strong>4. Elektrik Devresi</strong>
+        <span>Ohm Yasası (V = I·R)</span>
+      </button>
+    </nav>
+
+    <main class="lab-card">
+      <div class="lab-head">
+        <h2 id="toolTitle">Çıkrık Sistemi (Wheel &amp; Axle)</h2>
+        <span class="formula-pill" id="toolFormula">F · R = P · r</span>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="simCanvas" width="800" height="500"></canvas>
+      </div>
+
+      <div class="action-bar">
+        <button type="button" class="btn-primary" id="toggleAnimBtn">Animasyonu Başlat / Durdur</button>
+        <button type="button" class="btn-ghost" id="resetBtn">Sıfırla</button>
+      </div>
+
+      <div class="controls-group" id="controlsContainer"></div>
+
+      <div class="metrics-grid" id="metricsContainer"></div>
+
+      <section class="theory-box">
+        <h3 id="theoryTitle">Nasıl Çalışır? (10. Sınıf Özeti)</h3>
+        <p id="theoryText"></p>
+      </section>
+    </main>
+
+    <section class="gift-card">
+      <span class="badge badge-warm">24 Kasım Öğretmenler Günü</span>
+      <h3>Hocam, Öğretmenler Gününüz Kutlu Olsun!</h3>
+      <p>
+        Doğanın kurallarını ve fiziğin mantığını bize sevdirerek öğrettiğiniz için teşekkür ederiz. Bu interaktif simülasyon laboratuvarı hem size 24 Kasım hediyemiz hem de 10. sınıf fizik projemizdir.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("simCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const toolTitle = document.getElementById("toolTitle");
+    const toolFormula = document.getElementById("toolFormula");
+    const controlsContainer = document.getElementById("controlsContainer");
+    const metricsContainer = document.getElementById("metricsContainer");
+    const theoryTitle = document.getElementById("theoryTitle");
+    const theoryText = document.getElementById("theoryText");
+    const toggleAnimBtn = document.getElementById("toggleAnimBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const tabBtns = document.querySelectorAll(".tab-btn");
+
+    let currentTool = "cikrik";
+    let isRunning = true;
+    let phase = 0;
+
+    const state = {
+      cikrik: { R: 30, r: 10, load: 120 },
+      palanga: { ropes: 4, load: 200 },
+      egik: { angle: 30, mass: 10 },
+      devre: { voltage: 12, resistance: 4 }
+    };
+
+    const toolsConfig = {
+      cikrik: {
+        title: "Çıkrık Sistemi (Wheel & Axle)",
+        formula: "F · R = P · r",
+        theoryTitle: "Çıkrık Prensibi (Tork Dengesi)",
+        theory:
+          "Aynı eksen etrafında dönen farklı yarıçaplı iki silindirden oluşur. Çıkrık kolu (R) silindir yarıçapından (r) ne kadar büyükse uygulanan kuvvet (F) o kadar küçülür. Kuvvetten kazanç sağlanırken yoldan aynı oranda kayıp olur.",
+        controls: [
+          { key: "R", label: "Çıkrık Kolu (R)", unit: " cm", min: 15, max: 45, step: 1 },
+          { key: "r", label: "Silindir Yarıçapı (r)", unit: " cm", min: 5, max: 20, step: 1 },
+          { key: "load", label: "Yük Ağırlığı (P)", unit: " N", min: 60, max: 300, step: 10 }
+        ],
+        getMetrics(s) {
+          const advantage = (s.R / s.r).toFixed(2);
+          const force = (s.load / (s.R / s.r)).toFixed(1);
+          const lift = (2 * Math.PI * s.r).toFixed(1);
+          return [
+            { label: "Gereken Kuvvet (F)", value: `${force} N` },
+            { label: "Kuvvet Kazancı", value: `${advantage}x` },
+            { label: "1 Turda Yükselme", value: `${lift} cm` }
+          ];
+        }
+      },
+      palanga: {
+        title: "Palanga & Makara Sistemi",
+        formula: "F = P / n",
+        theoryTitle: "Sabit ve Hareketli Makaralar",
+        theory:
+          "Palanga sistemlerinde yükü taşıyan hareketli makara kollarındaki ip sayısı (n) arttıkça her ipe düşen gerilme azalır. Yükü 1 metre yükseltmek için ipi n metre çekmek gerekir; işten kazanç yoktur, kuvvetten kazanç vardır.",
+        controls: [
+          { key: "ropes", label: "Taşıyıcı İp Sayısı (n)", unit: " ip", min: 2, max: 6, step: 2 },
+          { key: "load", label: "Yük Ağırlığı (P)", unit: " N", min: 100, max: 400, step: 20 }
+        ],
+        getMetrics(s) {
+          const force = (s.load / s.ropes).toFixed(1);
+          return [
+            { label: "Çekme Kuvveti (F)", value: `${force} N` },
+            { label: "Kuvvet Kazancı", value: `${s.ropes}x` },
+            { label: "İp Çekme Oranı", value: `${s.ropes} kat` }
+          ];
+        }
+      },
+      egik: {
+        title: "Eğik Düzlem (Sürtünmesiz)",
+        formula: "F = m·g·sin(α)",
+        theoryTitle: "Eğik Düzlemde Kuvvet Bileşenleri",
+        theory:
+          "Cismin ağırlığı (G = m·g), eğik düzleme paralel (G·sinα) ve yüzeye dik (G·cosα) iki bileşene ayrılır. Açı küçüldükçe cismi yukarı çıkarmak için gereken kuvvet azalır; ancak yol uzar.",
+        controls: [
+          { key: "angle", label: "Eğim Açısı (α)", unit: "°", min: 15, max: 55, step: 1 },
+          { key: "mass", label: "Cisim Kütlesi (m)", unit: " kg", min: 2, max: 25, step: 1 }
+        ],
+        getMetrics(s) {
+          const rad = (s.angle * Math.PI) / 180;
+          const g = 10;
+          const fParallel = (s.mass * g * Math.sin(rad)).toFixed(1);
+          const acc = (g * Math.sin(rad)).toFixed(2);
+          return [
+            { label: "Paralel Kuvvet", value: `${fParallel} N` },
+            { label: "İvme (a = g·sinα)", value: `${acc} m/s²` },
+            { label: "Kuvvet Kazancı", value: `${(1 / Math.sin(rad)).toFixed(2)}x` }
+          ];
+        }
+      },
+      devre: {
+        title: "Basit Elektrik Devresi (Ohm)",
+        formula: "V = I · R",
+        theoryTitle: "10. Sınıf Elektrik ve Manyetizma",
+        theory:
+          "Bir iletkenin iki ucu arasındaki potansiyel farkın (V) üzerinden geçen akım şiddetine (I) oranı sabittir ve direnci (R) verir. Voltaj arttıkça akım artar, direnç arttıkça elektron akışı yavaşlar.",
+        controls: [
+          { key: "voltage", label: "Üreteç Gerilimi (V)", unit: " V", min: 3, max: 24, step: 1 },
+          { key: "resistance", label: "Direnç Değeri (R)", unit: " Ω", min: 2, max: 12, step: 1 }
+        ],
+        getMetrics(s) {
+          const current = (s.voltage / s.resistance).toFixed(2);
+          const power = (s.voltage * (s.voltage / s.resistance)).toFixed(1);
+          return [
+            { label: "Devre Akımı (I)", value: `${current} A` },
+            { label: "Elektriksel Güç", value: `${power} W` },
+            { label: "Direnç (R)", value: `${s.resistance} Ω` }
+          ];
+        }
+      }
+    };
+
+    function renderUI() {
+      const cfg = toolsConfig[currentTool];
+      const s = state[currentTool];
+
+      toolTitle.textContent = cfg.title;
+      toolFormula.textContent = cfg.formula;
+      theoryTitle.textContent = cfg.theoryTitle;
+      theoryText.textContent = cfg.theory;
+
+      controlsContainer.innerHTML = "";
+      cfg.controls.forEach((ctrl) => {
+        const wrap = document.createElement("div");
+        wrap.className = "control-item";
+        wrap.innerHTML = `
+          <div class="control-top">
+            <span>${ctrl.label}</span>
+            <span id="val_${ctrl.key}">${s[ctrl.key]}${ctrl.unit}</span>
+          </div>
+          <input type="range" min="${ctrl.min}" max="${ctrl.max}" step="${ctrl.step}" value="${s[ctrl.key]}" />
+        `;
+        const slider = wrap.querySelector("input");
+        slider.addEventListener("input", (e) => {
+          s[ctrl.key] = Number(e.target.value);
+          document.getElementById(`val_${ctrl.key}`).textContent = `${s[ctrl.key]}${ctrl.unit}`;
+          updateMetrics();
+        });
+        controlsContainer.appendChild(wrap);
+      });
+
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      const cfg = toolsConfig[currentTool];
+      const items = cfg.getMetrics(state[currentTool]);
+      metricsContainer.innerHTML = items
+        .map(
+          (m) => `
+          <div class="metric-box">
+            <small>${m.label}</small>
+            <strong>${m.value}</strong>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#f1f5f9";
+      ctx.lineWidth = 2;
+      for (let x = 0; x <= canvas.width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= canvas.height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+    }
+
+    function drawCikrik() {
+      const s = state.cikrik;
+      const cx = 340;
+      const cy = 190;
+      const cylR = s.r * 3.2;
+      const armR = s.R * 3.2;
+      const liftOffset = Math.sin(phase) * 58;
+
+      // Destek ayakları
+      ctx.fillStyle = "#cbd5e1";
+      ctx.fillRect(cx - 125, cy - 10, 22, 230);
+      ctx.fillRect(cx + 103, cy - 10, 22, 230);
+      ctx.fillStyle = "#94a3b8";
+      ctx.fillRect(cx - 165, cy + 210, 330, 18);
+
+      // Silindir gövde
+      ctx.fillStyle = "#e2e8f0";
+      ctx.strokeStyle = "#475569";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.roundRect(cx - 100, cy - cylR, 200, cylR * 2, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      // Sarılı halat çizgileri
+      ctx.strokeStyle = "#d97706";
+      ctx.lineWidth = 4;
+      for (let i = -70; i <= 50; i += 16) {
+        ctx.beginPath();
+        ctx.moveTo(cx + i, cy - cylR);
+        ctx.lineTo(cx + i + 6, cy + cylR);
+        ctx.stroke();
+      }
+
+      // Aşağı sarkan ip ve yük
+      const ropeX = cx - 20;
+      const loadY = cy + cylR + 75 - liftOffset;
+      ctx.strokeStyle = "#b45309";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(ropeX, cy + cylR - 4);
+      ctx.lineTo(ropeX, loadY);
+      ctx.stroke();
+
+      // Yük kutusu
+      ctx.fillStyle = "#2563eb";
+      ctx.beginPath();
+      ctx.roundRect(ropeX - 38, loadY, 76, 62, 12);
+      ctx.fill();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 20px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${s.load} N`, ropeX, loadY + 38);
+
+      // Sağ taraftaki çıkrık kolu (R)
+      const crankX = cx + 125;
+      const handleX = crankX + Math.cos(phase) * armR * 0.45;
+      const handleY = cy + Math.sin(phase) * armR;
+
+      // Dış çember yörüngesi
+      ctx.strokeStyle = "rgba(37, 99, 235, 0.25)";
+      ctx.setLineDash([8, 8]);
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.ellipse(crankX, cy, armR * 0.45, armR, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Çıkrık kolu
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.moveTo(crankX, cy);
+      ctx.lineTo(handleX, handleY);
+      ctx.stroke();
+
+      // Tutamak
+      ctx.fillStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.arc(handleX, handleY, 13, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Etiketler
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 18px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(`R = ${s.R} cm`, crankX + 24, cy - 12);
+      ctx.fillText(`r = ${s.r} cm`, cx - 85, cy - cylR - 14);
+    }
+
+    function drawPalanga() {
+      const s = state.palanga;
+      const cx = 400;
+      const lift = Math.sin(phase) * 38;
+      const topY = 85;
+      const botY = 250 - lift;
+
+      // Tavan
+      ctx.fillStyle = "#334155";
+      ctx.fillRect(240, 35, 320, 16);
+
+      // İpler
+      ctx.strokeStyle = "#d97706";
+      ctx.lineWidth = 4;
+      const spread = 16;
+      for (let i = 0; i < s.ropes; i++) {
+        const offset = (i - (s.ropes - 1) / 2) * spread;
+        ctx.beginPath();
+        ctx.moveTo(cx + offset, topY);
+        ctx.lineTo(cx + offset, botY);
+        ctx.stroke();
+      }
+
+      // Çekilen serbest ip
+      ctx.strokeStyle = "#ef4444";
+      ctx.beginPath();
+      ctx.moveTo(cx + 46, topY);
+      ctx.lineTo(cx + 125, 220 + lift);
+      ctx.stroke();
+
+      // Üst sabit makara
+      ctx.fillStyle = "#e2e8f0";
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(cx, topY, 44, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Alt hareketli makara
+      ctx.beginPath();
+      ctx.arc(cx, botY, 40, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Yük
+      ctx.fillStyle = "#0ea5e9";
+      ctx.beginPath();
+      ctx.roundRect(cx - 46, botY + 52, 92, 62, 12);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 20px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${s.load} N`, cx, botY + 90);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 18px sans-serif";
+      ctx.fillText(`Taşıyıcı İp: ${s.ropes}`, 140, 110);
+      ctx.fillStyle = "#ef4444";
+      ctx.fillText(`F = ${(s.load / s.ropes).toFixed(1)} N`, cx + 150, 195);
+    }
+
+    function drawEgik() {
+      const s = state.egik;
+      const rad = (s.angle * Math.PI) / 180;
+      const baseX = 160;
+      const baseY = 410;
+      const len = 460;
+      const topX = baseX + Math.cos(rad) * len;
+      const topY = baseY - Math.sin(rad) * len;
+
+      // Eğik düzlem üçgeni
+      ctx.fillStyle = "rgba(37, 99, 235, 0.12)";
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(baseX, baseY);
+      ctx.lineTo(topX, baseY);
+      ctx.lineTo(topX, topY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Hareket eden blok
+      const progress = 0.45 + Math.sin(phase) * 0.25;
+      const bx = baseX + (topX - baseX) * progress;
+      const by = baseY + (topY - baseY) * progress;
+
+      ctx.save();
+      ctx.translate(bx, by);
+      ctx.rotate(-rad);
+      ctx.fillStyle = "#f59e0b";
+      ctx.beginPath();
+      ctx.roundRect(-34, -52, 68, 52, 10);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 18px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`${s.mass} kg`, 0, -20);
+
+      // Yukarı çeken kuvvet vektörü
+      ctx.strokeStyle = "#ef4444";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(36, -26);
+      ctx.lineTo(115, -26);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 19px sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(`α = ${s.angle}°`, baseX + 55, baseY - 14);
+    }
+
+    function drawDevre() {
+      const s = state.devre;
+      const current = s.voltage / s.resistance;
+      const x1 = 170, y1 = 100, x2 = 630, y2 = 390;
+
+      // İletken teller
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 6;
+      ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+      // Üreteç (Sol kenar)
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(x1 - 24, 210, 48, 70);
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(x1 - 24, 232);
+      ctx.lineTo(x1 + 24, 232);
+      ctx.stroke();
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(x1 - 14, 258);
+      ctx.lineTo(x1 + 14, 258);
+      ctx.stroke();
+
+      // Direnç (Üst kenar)
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(320, y1 - 20, 160, 40);
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(320, y1);
+      for (let i = 0; i < 8; i++) {
+        ctx.lineTo(330 + i * 20, y1 + (i % 2 === 0 ? -16 : 16));
+      }
+      ctx.lineTo(480, y1);
+      ctx.stroke();
+
+      // Ampul (Sağ kenar)
+      const glow = Math.min(1, current / 6);
+      ctx.fillStyle = `rgba(250, 204, 21, ${0.2 + glow * 0.75})`;
+      ctx.strokeStyle = "#d97706";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(x2, 245, 34, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Akan elektron noktaları
+      const speed = current * 0.6;
+      const perimeter = 2 * ((x2 - x1) + (y2 - y1));
+      ctx.fillStyle = "#0ea5e9";
+      for (let i = 0; i < 14; i++) {
+        let d = ((i * perimeter) / 14 + phase * 35 * speed) % perimeter;
+        let px = x1, py = y1;
+        const w = x2 - x1;
+        const h = y2 - y1;
+        if (d < w) {
+          px = x1 + d;
+          py = y1;
+        } else if (d < w + h) {
+          px = x2;
+          py = y1 + (d - w);
+        } else if (d < 2 * w + h) {
+          px = x2 - (d - w - h);
+          py = y2;
+        } else {
+          px = x1;
+          py = y2 - (d - 2 * w - h);
+        }
+        ctx.beginPath();
+        ctx.arc(px, py, 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 18px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(`R = ${s.resistance} Ω`, 400, y1 - 30);
+      ctx.fillText(`${s.voltage} V`, x1 - 55, 250);
+      ctx.fillText(`I = ${current.toFixed(2)} A`, 400, y2 + 34);
+    }
+
+    function animate() {
+      if (isRunning) {
+        phase += 0.03;
+      }
+      drawGrid();
+      if (currentTool === "cikrik") drawCikrik();
+      else if (currentTool === "palanga") drawPalanga();
+      else if (currentTool === "egik") drawEgik();
+      else if (currentTool === "devre") drawDevre();
+
+      requestAnimationFrame(animate);
+    }
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentTool = btn.dataset.tool;
+        phase = 0;
+        renderUI();
+      });
+    });
+
+    toggleAnimBtn.addEventListener("click", () => {
+      isRunning = !isRunning;
+    });
+
+    resetBtn.addEventListener("click", () => {
+      phase = 0;
+    });
+
+    renderUI();
+    animate();
+  </script>
+</body>
+</html>
